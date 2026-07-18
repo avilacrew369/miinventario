@@ -1,0 +1,33 @@
+  @forelse ($products as $index => $product)
+                        <tr class="border-b">
+                            <td class="py-2 px-4">{{ $product['name'] }}</td>
+                            <td class="py-2 px-4">
+                               <x-wire-input 
+                                    wire:model.live="products.{{ $index }}.quantity"
+                                    type="number"
+                                    class="w-20"
+                               />
+                            </td>
+                            <td class="py-2 px-4">
+                                 <x-wire-input 
+                                    wire:model.live="products.{{ $index }}.price"
+                                    type="number"
+                                    class="w-20"
+                               />
+                            </td>
+                            <td class="py-2 px-4">{{ $product['quantity'] * $product['price'] }}</td>
+                            <td class="py-2 px-4">
+                                <x-wire-mini-button 
+                                    wire:click="removeProduct({{ $loop->index }})"
+                                    color="red"
+                                    size="rounded"
+                                    icon="trash"
+                                    >
+                                    Eliminar
+                                </x-wire-mini-button>
+                            </td>
+                        </tr>
+                        
+                    @empty
+                        
+                    @endforelse

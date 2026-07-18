@@ -71,7 +71,7 @@
             src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js">
         </script>
 
-          <script>
+        <script>
             Livewire.on('swal', (data) => {
             Swal.fire(data[0]);
             });
@@ -80,8 +80,9 @@
      
 
     @if (session('swal'))
-    
-  
+        <script>
+            Swal.fire(@json(session('swal')));
+        </script>
     @endif
 
     @stack('js')

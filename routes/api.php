@@ -23,15 +23,15 @@ Route::post('/products', function (Request $request) {
 
 
 Route::post('/suppliers', function (Request $request) {
-    return Suppliers::query()->select('id', 'name')
-             ->when(
-                $request->search,
-                fn ( $query) => $query
-                    ->where('name', 'like', "%{$request->search}%")
-                    ->orWhere('document_number', 'like', "%{$request->search}%")
-    ) ->when(
+    return Suppliers::select('id', 'name')
+            ->when($request->search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                ->orWhere('document_number', 'like', "%{$search}%");
+            })
+              ->when(
                 $request->exists('selected'),
-                fn ($query) => $query->whereIn('id', $request->input('selected', [])),
-                fn ($query) => $query->limit(10)
+                fn (Builder $query) => $query->whereIn('id', $request->input('selected', [])),
+                fn (Builder $query) => $query->limit(10)
             )->get();
+
 })->name('api.suppliers.index');
